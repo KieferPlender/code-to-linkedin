@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build LinkedIn Profile"
+  short_description: "Turn verified code contributions into profile copy"
+  default_prompt: "Use $build-linkedin-profile to analyze my repositories and draft an evidence-based LinkedIn profile."

@@ -1,0 +1,14 @@
+{
+  "name": "code-to-linkedin",
+  "owner": {
+    "name": "Kiefer Plender"
+  },
+  "description": "Installable career-profile skills that derive public-safe claims from verified code contributions.",
+  "plugins": [
+    {
+      "name": "code-to-linkedin",
+      "source": ".",
+      "description": "Turn verified code contributions into credible LinkedIn profile copy"
+    }
+  ]
+}

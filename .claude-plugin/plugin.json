@@ -1,0 +1,13 @@
+{
+  "name": "code-to-linkedin",
+  "version": "0.1.0",
+  "description": "Create evidence-based LinkedIn profile copy from code and verified Git contributions.",
+  "author": {
+    "name": "Kiefer Plender",
+    "url": "https://github.com/KieferPlender"
+  },
+  "homepage": "https://github.com/KieferPlender/code-to-linkedin",
+  "repository": "https://github.com/KieferPlender/code-to-linkedin",
+  "license": "MIT",
+  "keywords": ["career", "linkedin", "git", "profile"]
+}

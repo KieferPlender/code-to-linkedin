@@ -1,0 +1,27 @@
+{
+  "name": "code-to-linkedin",
+  "version": "0.1.0",
+  "description": "Create evidence-based LinkedIn profile copy from code and verified Git contributions.",
+  "author": {
+    "name": "Kiefer Plender",
+    "url": "https://github.com/KieferPlender"
+  },
+  "homepage": "https://github.com/KieferPlender/code-to-linkedin",
+  "repository": "https://github.com/KieferPlender/code-to-linkedin",
+  "license": "MIT",
+  "skills": "./skills/",
+  "keywords": ["career", "linkedin", "git", "profile"],
+  "interface": {
+    "displayName": "Code to LinkedIn",
+    "shortDescription": "Turn verified code contributions into profile copy.",
+    "longDescription": "Analyzes scoped repositories and optional Git history, asks targeted career questions, and drafts credible LinkedIn headlines, summaries, experience entries, titles, and skills without inventing impact.",
+    "developerName": "Kiefer Plender",
+    "category": "Productivity",
+    "capabilities": ["Read"],
+    "defaultPrompt": [
+      "Analyze my work and draft my LinkedIn profile.",
+      "Turn my Git contributions into experience bullets.",
+      "Suggest credible job titles and skills from my code."
+    ]
+  }
+}
