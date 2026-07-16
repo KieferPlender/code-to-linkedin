@@ -1,43 +1,61 @@
 ---
 name: generate-linkedin-skills
-description: Automatically generate a ranked, copy-ready LinkedIn Skills section by analyzing one or more codebases and the user's actual Git contributions. Use when a user wants to discover which technical, engineering, tooling, domain, and professional skills their code demonstrates; choose the strongest skills to add or pin on LinkedIn; or refresh their LinkedIn skills from work they wrote, maintained, designed, or owned.
+description: Generate or synchronize a developer's LinkedIn Skills section from one or more codebases and their actual Git contributions. Use when a user wants to create a LinkedIn-ready skills list, compare demonstrated skills with an existing LinkedIn profile, decide what to add, keep, reorder, demote, or remove, associate skills with Experience entries, optimize for a target role, or use the evidence to draft a consistent developer headline, About section, or experience description.
 ---
 
 # Generate LinkedIn Skills
 
-Turn the user's actual engineering work into a ranked LinkedIn skills list. Analyze code and contribution history deeply enough to distinguish substantive demonstrated skills from incidental repository exposure. Make the default result immediately usable in LinkedIn's Skills section.
+Turn verified engineering work into a focused, LinkedIn-native action plan. Analyze code and contribution history deeply enough to distinguish substantive capability from repository exposure. Lead with changes the user can make, not a methodology report.
 
-## 1. Run an automatic interactive intake
+## 1. Select the workflow automatically
 
-Do not require the user to paste an intake template. Treat a bare invocation such as `$generate-linkedin-skills` or `/code-to-linkedin:generate-linkedin-skills` as sufficient.
+Treat a bare invocation such as `$generate-linkedin-skills` or `/code-to-linkedin:generate-linkedin-skills` as sufficient.
 
-Discover sensible defaults before asking anything:
+Use one of two modes:
 
-- use the current repository as the default scope;
-- inspect `git config user.name`, `git config user.email`, and `git shortlog -sne --all` to find likely Git identities;
-- infer output language from the user's conversation;
-- apply public-safe confidentiality defaults automatically;
-- generate a general LinkedIn skills profile unless the user asks for role-specific optimization.
+- **Create mode**: build a new LinkedIn Skills section when the current profile is unavailable.
+- **Sync mode**: compare demonstrated skills with the user's current LinkedIn profile and recommend exact additions, ordering, associations, demotions, and removals.
 
-Use the product's native interactive question interface when available:
+Enter sync mode automatically when the user supplies a profile export, PDF, screenshot, pasted profile, or accessible profile page. Otherwise default to create mode. Do not block useful output merely because the current profile is unavailable.
 
-- in Codex, use `request_user_input` when that tool is available;
-- in Claude Code, use `AskUserQuestion`;
-- otherwise ask a concise conversational question.
+Discover defaults before asking anything:
 
-Ask at most three intake questions in one round, and only when needed:
+- use the current repository as the initial scope;
+- inspect `git config user.name`, `git config user.email`, and `git shortlog -sne --all` for likely identities;
+- infer output and profile language from the conversation or supplied profile;
+- apply public-safe confidentiality defaults;
+- generate a coherent general developer profile unless the user asks for role-specific optimization.
 
-1. **Identity**: show likely Git identities for confirmation when more than one plausible author exists.
-2. **Scope**: ask whether to include other accessible repositories only when multiple likely repositories are available or requested.
-3. **Goal**: offer “General LinkedIn skills” as the default and “Optimize for a target role” as the alternative. Ask for the role only when the second option is selected.
+Use the product's native question interface when available: `request_user_input` in Codex, `AskUserQuestion` in Claude Code, or a concise conversational question otherwise.
 
-Do not ask separately for confidentiality or output language unless the user requests unusual handling. Do not ask the user to type information that can be discovered from the workspace.
+Ask only for a decision that cannot be discovered. Combine necessary choices into one intake round, with no more than three questions:
 
-## 2. Identify the user's work
+1. confirm identity only when multiple plausible authors remain;
+2. confirm scope only when multiple likely repositories are available or requested;
+3. choose general positioning or a target role only when the user has not already stated it.
 
-Understand each repository through high-signal files: documentation, manifests, architecture, service boundaries, schemas, infrastructure, CI/CD, representative implementation, and tests.
+If the user explicitly wants sync mode but no profile is accessible, ask for one convenient source: an attached export/PDF, pasted current skills and Experience entries, or an opened profile in an available user-authorized browser. Do not require a metadata template.
 
-Use Git history to focus the analysis on work the user actually contributed:
+## 2. Read the current LinkedIn state in sync mode
+
+Use only information the user supplied or made accessible through an authorized tool. Capture, when available:
+
+- profile language;
+- current skill labels and display order;
+- visible endorsement signals;
+- Experience titles, organizations, dates, and descriptions;
+- existing skill-to-Experience associations;
+- visible Featured items or Connected Apps that already substantiate relevant skills.
+
+Do not change the profile while gathering state. If the current profile cannot be read reliably, continue in create mode and clearly say that the result is a proposed profile rather than a diff.
+
+When current LinkedIn limits, fields, or UI behavior materially affect the result and web access exists, verify them against official LinkedIn Help or Microsoft Learn documentation.
+
+## 3. Identify the user's work
+
+Inspect high-signal repository areas first: documentation, manifests, architecture, service boundaries, schemas, infrastructure, CI/CD, representative implementation, and tests. Avoid unrelated repository-wide reading.
+
+Use Git history to attribute relevant work:
 
 ```bash
 git shortlog -sne --all
@@ -45,43 +63,35 @@ git log --author='<identity>' --date=short --format='%ad%x09%h%x09%s' --name-onl
 git log --follow --date=short --format='%ad%x09%an%x09%s' -- <path>
 ```
 
-Use targeted `git blame` when it helps determine whether the user introduced, evolved, or maintained relevant implementation. Account for renamed identities, co-authorship, squashed commits, pair programming, shared accounts, and work missing from Git. Do not use commit or line counts as a skill score.
+Use targeted `git blame` to determine whether the user introduced, evolved, or maintained relevant implementation. Account for renamed identities, co-authorship, squashed commits, pair programming, shared accounts, and work missing from Git. Do not use commit or line counts as a skill score.
 
-Before asking a post-scan question about any candidate skill, complete a targeted evidence audit for that skill. Inspect the relevant implementation, configuration, tests, documentation and runbooks, infrastructure, CI/CD, commit history, and blame. Search adjacent files that can distinguish how the technology was used, but do not scan unrelated parts of the repository. Record the most precise conclusion the available evidence supports.
+Before asking a post-scan question about a candidate skill, complete a targeted evidence audit. Inspect its relevant implementation, configuration, tests, documentation and runbooks, infrastructure, CI/CD, history, blame, and adjacent files. Record the most precise conclusion the evidence supports.
 
-Never ask the user to interpret evidence that is available in the accessible codebases or Git history. Questions are for facts that cannot be discovered there, such as responsibilities performed in a live environment, work in an inaccessible repository, or collaboration that Git does not capture.
+Never ask the user to interpret accessible code or Git evidence. Reserve questions for facts that cannot be discovered there, such as live operational work, inaccessible repositories, incident response, mentoring, or collaboration absent from Git.
 
-## 3. Extract demonstrated skills
+## 4. Infer demonstrated skills and capability level
 
-Generate skill candidates from substantive evidence such as:
+Generate candidates from substantive evidence, including:
 
-- implementation in a language or framework;
-- design of APIs, data models, integrations, or system boundaries;
-- debugging, performance, security, reliability, or concurrency work;
-- tests, automation, CI/CD, observability, deployments, and migrations;
-- cloud, infrastructure, databases, messaging, and data pipelines;
-- architecture, technical writing, developer experience, and reusable tooling;
+- languages, frameworks, APIs, data models, integrations, and system boundaries;
+- debugging, performance, security, reliability, concurrency, and migrations;
+- tests, automation, CI/CD, observability, deployment, cloud, and infrastructure;
+- databases, messaging, data pipelines, developer tooling, and documentation;
 - repeated ownership of product or domain problems;
-- review, mentoring, standards, or technical leadership when supported by history or user context.
+- architecture, standards, review, mentoring, or technical leadership when supported.
 
-Do not add a technology merely because it appears in a dependency, lockfile, generated file, or neighboring module. Look for meaningful implementation, configuration, tests, maintenance, or explicit confirmation.
+Do not add a technology merely because it appears in a dependency, lockfile, generated file, template, or neighboring module.
 
-For each candidate, assess:
+Assess evidence strength separately from capability level.
 
-| Factor | Meaning |
-|---|---|
-| Depth | complexity and sophistication of demonstrated use |
-| Frequency | recurring work versus a one-off touch |
-| Recency | how recently the skill was exercised |
-| Ownership | implementation, design, maintenance, or end-to-end responsibility |
-| Breadth | use across projects, layers, or problem types |
-| Target relevance | value for the user's desired next role, when provided |
+Evidence strength:
 
-Use qualitative ratings—strong, moderate, emerging, or uncertain—rather than fake numerical precision.
+- **Strong**: deep, repeated, recent, or broad contribution evidence.
+- **Moderate**: meaningful implementation or maintenance with narrower depth or frequency.
+- **Emerging**: real but early or limited demonstrated use.
+- **Uncertain**: attribution or interpretation remains unresolved after targeted inspection.
 
-### Classify the demonstrated capability
-
-Distinguish the level of demonstrated work instead of treating technology ownership as a yes-or-no question:
+Capability level:
 
 1. **Incidental exposure**: dependency, generated file, copied configuration, or neighboring code only. Omit it.
 2. **Application use**: implemented product behavior with the technology or deployed an application to it.
@@ -89,73 +99,115 @@ Distinguish the level of demonstrated work instead of treating technology owners
 4. **Administration and operation**: provisioned, secured, upgraded, observed, debugged, or recovered the underlying service or platform.
 5. **Architecture and ownership**: made recurring cross-cutting design decisions or led the capability across systems.
 
-Choose the most precise LinkedIn skill label and ranking supported by the highest demonstrated level. A user does not need to administer a platform for the base technology to be a valid skill. Do not inflate application use into platform administration, and do not underrank substantial application delivery merely because cluster or service provisioning lives elsewhere.
+A user does not need to administer a platform for its base technology to be a valid skill. Do not inflate application use into administration, and do not label a demonstrated skill “uncertain” merely because a higher capability level is absent.
 
-For Kubernetes, determine the level from evidence rather than asking the user to classify it:
+For Kubernetes, treat authored workload manifests, Helm or Kustomize configuration, probes, resources, application configuration, and rollout workflows as application-delivery evidence. Treat cluster provisioning, upgrades, node pools, add-ons, operators, cluster-wide RBAC or policy, admission control, ingress, networking, storage, autoscaling, observability, recovery, incident fixes, and operational runbooks as platform-operation evidence. Rank `Kubernetes` from the demonstrated depth; add administration or platform-engineering claims only when their evidence exists.
 
-- **Application delivery evidence** includes authored or maintained workload manifests, Helm charts or values, Kustomize overlays, Deployments, StatefulSets, Services, Jobs, probes, resources, application configuration, and CI/CD rollout or rollback workflows.
-- **Platform operation evidence** includes cluster or node-pool provisioning, upgrades, add-ons, operators or controllers, cluster-wide RBAC or policy, admission control, ingress, networking, storage, autoscaling, observability, backup and recovery, operational tooling, incident fixes, and runbooks. Inspect infrastructure-as-code and platform repositories when they are accessible.
-- Attribute that evidence through Git. If only application delivery is demonstrated, `Kubernetes` can still be ranked according to its depth, frequency, and recency, while claims such as `Kubernetes Administration` or platform ownership are excluded. If platform-operation evidence is demonstrated, elevate the ranking and the associated operational or platform-engineering capabilities.
+## 5. Normalize and rank for LinkedIn
 
-## 4. Normalize for LinkedIn
+Translate evidence into recognizable, useful LinkedIn labels:
 
-Convert repository-specific evidence into recognizable LinkedIn skill names:
+- prefer market-standard terminology over internal component names;
+- merge aliases and duplicates;
+- include a broad capability and a specific technology only when each adds distinct value;
+- keep confidential domains generic while preserving useful expertise;
+- exclude vague filler, language primitives, routine baseline tools, tiny utilities, and low-signal micro-libraries unless important to the target role;
+- exclude generated artifacts and repository-wide technologies the user did not meaningfully use.
 
-- prefer common market terminology over internal component names;
-- merge aliases and duplicates, such as `Postgres` and `PostgreSQL`;
-- separate a broad skill from a specific tool only when both are independently demonstrated;
-- include capabilities such as API Design, Distributed Systems, Test Automation, or CI/CD alongside technologies;
-- keep confidential business domains generic while preserving useful expertise;
-- avoid vague filler such as “Hard Working,” “Problem Solving,” or “Technology” unless the user explicitly wants soft skills.
+When a user-authorized LinkedIn browser is available, validate proposed labels by reading LinkedIn's skill suggestions without selecting or saving them. Use the exact suggested label. When validation is unavailable, use the most likely common label and flag only genuinely uncertain labels as unverified.
 
-Rank skills by demonstrated strength first, then target-role relevance and recency. Do not rank alphabetically.
+Rank by:
 
-## 5. Ask only non-discoverable follow-up questions
+1. demonstrated strength and capability level;
+2. coherence with the developer identity the evidence supports;
+3. market recognizability and usefulness;
+4. recency and breadth;
+5. target-role relevance when supplied.
 
-Produce the initial ranked result from repository evidence without waiting for post-scan answers. Most runs should require no follow-up beyond any necessary identity or scope confirmation.
+For a general profile, build a coherent story rather than maximizing keyword count. Balance core identity, specialist differentiators, supporting technologies, and delivery or platform capabilities. Recommend 15–25 primary skills by default, with 8–15 in the immediate action set and no more than 10 optional additions.
 
-Use the native question interface only when all of these conditions are true:
+Do not claim that LinkedIn has a special “top five pinning” model. Produce a desired display order.
+
+## 6. Produce a LinkedIn-native action plan
+
+Lead with the plan. Keep evidence compact and place methodology last or omit it.
+
+### Create mode
+
+Return:
+
+1. **Add now**: 8–15 ranked skills.
+2. **Desired display order**: the complete focused list of 15–25 labels, one per line.
+3. **Experience associations**: which Experience entry should be selected for each skill when known.
+4. **Why the leading skills belong**: compact evidence for the highest-priority skills.
+5. **Add later**: demonstrated but less important skills.
+6. **Do not add**: incidental, overly granular, misleading, or weakly attributed technologies.
+7. **Positioning line**: one sentence describing the coherent developer identity represented by the list.
+
+Use this table for the immediate action set:
+
+| Order | LinkedIn skill | Associate with | Capability level | Evidence strength | Why it belongs |
+|---:|---|---|---|---|---|
+
+Use the exact visible Experience title when the profile is known. In create mode, write `Needs profile mapping` when the relevant role cannot be identified; never invent an employer or title.
+
+### Sync mode
+
+Return:
+
+1. **Change summary**: counts for add, move up, keep, demote, and remove.
+2. **Recommended changes** using the table below.
+3. **Desired display order** after the changes.
+4. **Experience associations** to add or correct.
+5. **Evidence for material changes**.
+6. **Profile alignment**: conflicts or gaps between leading skills and the visible headline, About, Experience, Featured items, or Connected Apps.
+7. **Optional refinements** that depend on off-repository facts.
+
+| Action | LinkedIn skill | Desired order | Associate with | Capability level | Reason |
+|---|---|---:|---|---|---|
+
+Use only these actions: `Add`, `Move up`, `Keep`, `Demote`, and `Remove`. Recommend `Remove` only when the current profile is known and the skill is misleading, obsolete, duplicated, or harmful to positioning. Prefer `Demote` when endorsements or useful history may be lost.
+
+Do not mix demonstrated capability with missing higher-level scope. For example, list `Kubernetes` as demonstrated application delivery instead of placing it under “uncertain” because cluster administration is not shown.
+
+## 7. Ask only non-discoverable follow-up questions
+
+Produce the initial plan without waiting for post-scan answers. Most runs should require no follow-up beyond necessary identity, scope, goal, or profile-access confirmation.
+
+Ask an optional refinement question only when all conditions hold:
 
 1. the targeted evidence audit is complete;
-2. the answer is not discoverable from any accessible codebase or Git history;
-3. two or more interpretations remain genuinely plausible; and
-4. the answer would add, remove, or substantially reorder a skill.
+2. the answer is absent from all accessible repositories and profile sources;
+3. multiple interpretations remain genuinely plausible; and
+4. the answer would materially change the plan.
 
-Ask the question after the copy-ready result as an optional refinement. State what the evidence already establishes and ask only for the missing off-repository fact. Valid examples include whether the user also operated production infrastructure whose configuration is in an inaccessible repository, handled incidents that left no repository artifacts, or mentored engineers outside Git-visible work.
+State what the evidence already establishes and ask only for the missing off-repository fact. Never ask the user to choose a label that repository or profile evidence can resolve.
 
-Do not ask the user to choose between skill labels when the evidence can resolve the distinction. For example, authentication implementation should be classified from the changed flows, authorization models, threat controls, tests, and ownership history; model integration should be distinguished from model training by inspecting the implementation and dependencies. Update the list from any answer without discarding the repository evidence.
+## 8. Apply changes only with explicit approval
 
-## 6. Produce copy-ready output
+Planning is the default. Do not mutate a LinkedIn profile unless the user explicitly asks to apply the plan and an authorized browser or official API is available.
 
-Return these sections by default:
+Before applying:
 
-1. **Top 5 skills to feature**: the strongest and most strategically useful skills, ordered for LinkedIn pinning.
-2. **Skills to add**: 20-40 normalized LinkedIn skill names in ranked order, formatted one per line for easy entry.
-3. **Why these skills**: a compact table mapping each top skill to contribution evidence and strength.
-4. **Emerging or uncertain skills**: plausible skills that need confirmation or more evidence before adding.
-5. **Skills to omit**: repository technologies that were incidental, generated, or not meaningfully used by the user.
+1. show the exact add, reorder, association, demotion, and removal operations;
+2. identify destructive actions and possible endorsement loss;
+3. obtain explicit approval for the displayed operations;
+4. preserve the profile language unless the user requests a change.
 
-When helpful, also group the ranked list into:
+Apply only approved operations. Re-read the page after each save or coherent batch, verify the resulting state, and stop on any mismatch. Never scrape LinkedIn, bypass access controls, extract session cookies, request credentials, use unofficial private endpoints, or assume that an MCP server grants authorization. Use an MCP integration only when it relies on an official API with the required approved scopes.
 
-- languages and frameworks;
-- architecture and engineering capabilities;
-- data, cloud, infrastructure, and tooling;
-- quality, security, reliability, and delivery;
-- product, domain, and leadership skills.
+## 9. Draft the rest of the developer profile when requested
 
-Do not bury the copy-ready list beneath a long methodology explanation. Lead with the recommendations.
+Use the same evidence and positioning to produce any requested profile package:
 
-## 7. Optional LinkedIn writing
-
-Only when the user requests it, use the skills analysis to draft:
-
-- LinkedIn headline options;
+- three concise headline options;
 - an About section;
-- job-title suggestions;
-- experience descriptions and accomplishment bullets.
+- accurate job-title suggestions;
+- Experience descriptions and accomplishment bullets;
+- Featured-project suggestions.
 
-Keep these optional outputs consistent with the ranked skills rather than rerunning an unrelated career assessment.
+Keep terminology consistent with the selected skills and map important skills to the relevant Experience entry. Do not invent business impact, scale, leadership, or production responsibility; ask about non-discoverable results only when they would materially improve the writing.
 
-## 8. Protect private information
+## 10. Protect private information
 
-Do not reproduce source code, credentials, internal URLs, customer data, undisclosed vulnerabilities, or confidential names. Translate proprietary technology and domain work into public-safe skill terminology. Never invent experience with a skill; mark ambiguous candidates for confirmation.
+Do not reproduce source code, credentials, internal URLs, customer data, undisclosed vulnerabilities, or confidential names. Translate proprietary work into public-safe capability language. Never invent experience, and never expose repository evidence merely to make the explanation sound specific.

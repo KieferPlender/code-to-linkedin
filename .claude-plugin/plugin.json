@@ -1,7 +1,7 @@
 {
   "name": "code-to-linkedin",
-  "version": "0.2.1",
-  "description": "Automatically generate a ranked LinkedIn Skills section from actual code contributions.",
+  "version": "0.3.0",
+  "description": "Create or synchronize a LinkedIn Skills section from actual code contributions.",
   "author": {
     "name": "Kiefer Plender",
     "url": "https://github.com/KieferPlender"
@@ -9,5 +9,5 @@
   "homepage": "https://github.com/KieferPlender/code-to-linkedin",
   "repository": "https://github.com/KieferPlender/code-to-linkedin",
   "license": "MIT",
-  "keywords": ["career", "linkedin", "git", "profile"]
+  "keywords": ["career", "linkedin", "git", "profile", "developer"]
 }
