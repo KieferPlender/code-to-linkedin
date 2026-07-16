@@ -1,4 +1,4 @@
 interface:
   display_name: "Generate LinkedIn Skills"
-  short_description: "Build a LinkedIn skills plan from your code"
-  default_prompt: "Use $generate-linkedin-skills to analyze my code and create a LinkedIn-ready skills action plan."
+  short_description: "Generate focused LinkedIn skills from your code"
+  default_prompt: "Use $generate-linkedin-skills to analyze my code contributions and generate a focused LinkedIn Skills section."

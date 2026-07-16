@@ -3,12 +3,12 @@
   "owner": {
     "name": "Kiefer Plender"
   },
-  "description": "Installable developer-profile skills that turn verified code contributions into LinkedIn-native action plans.",
+  "description": "Installable developer skills that turn verified code contributions into focused LinkedIn Skills recommendations.",
   "plugins": [
     {
       "name": "code-to-linkedin",
       "source": ".",
-      "description": "Create or synchronize a LinkedIn Skills section from verified code contributions"
+      "description": "Generate a focused LinkedIn Skills section from verified code contributions"
     }
   ]
 }

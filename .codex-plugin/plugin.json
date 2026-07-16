@@ -1,7 +1,7 @@
 {
   "name": "code-to-linkedin",
-  "version": "0.3.1",
-  "description": "Create or synchronize a LinkedIn Skills section from actual code contributions.",
+  "version": "0.4.0",
+  "description": "Generate a focused LinkedIn Skills section from actual code contributions.",
   "author": {
     "name": "Kiefer Plender",
     "url": "https://github.com/KieferPlender"
@@ -14,14 +14,14 @@
   "interface": {
     "displayName": "Code to LinkedIn",
     "shortDescription": "Build a LinkedIn skills plan from your code.",
-    "longDescription": "Analyzes codebases and Git contributions, compares them with an existing LinkedIn profile when available, and produces an actionable plan to add, keep, reorder, associate, demote, or remove developer skills.",
+    "longDescription": "Analyzes codebases and Git contributions to identify substantive developer skills, rank what belongs on LinkedIn, explain the strongest recommendations, and exclude incidental or misleading repository technologies.",
     "developerName": "Kiefer Plender",
     "category": "Productivity",
     "capabilities": ["Read", "Interactive"],
     "defaultPrompt": [
-      "Create a LinkedIn skills plan from my code.",
-      "Compare my code evidence with my LinkedIn skills.",
-      "Optimize my developer LinkedIn for a target role."
+      "Generate my LinkedIn skills from this repository.",
+      "Rank the strongest skills across my repositories.",
+      "Optimize my demonstrated skills for a target role."
     ]
   }
 }
