@@ -8,7 +8,7 @@
     {
       "name": "code-to-linkedin",
       "source": ".",
-      "description": "Turn verified code contributions into credible LinkedIn profile copy"
+      "description": "Automatically generate and rank LinkedIn skills from your code contributions"
     }
   ]
 }

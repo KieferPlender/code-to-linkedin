@@ -1,19 +1,21 @@
 # Code to LinkedIn
 
-Code to LinkedIn is an installable skill for Codex and Claude Code that turns verified code contributions into credible LinkedIn profile copy.
+Code to LinkedIn is an installable skill for Codex and Claude Code that automatically generates your LinkedIn Skills section from code you actually contributed.
 
-It inspects selected parts of a codebase, uses targeted Git history when authorship matters, asks questions that code cannot answer, and drafts:
+It analyzes one or more codebases, uses Git history and targeted blame to focus on your contributions, and produces:
 
-- LinkedIn headline options
-- Conservative, market-standard, and aspirational job-title options
-- A first-person About section
-- Experience descriptions and bullets
-- A prioritized skills list
-- Verification notes for claims that need confirmation
+- The top five skills to feature on LinkedIn
+- A ranked, copy-ready list of 20-40 LinkedIn skills
+- Technical capabilities as well as languages, frameworks, platforms, and tools
+- Evidence explaining why the strongest skills were selected
+- Emerging skills that need confirmation
+- Repository technologies to omit because you did not meaningfully use them
+
+LinkedIn headlines, About text, job titles, and experience descriptions are available as optional follow-up outputs rather than the primary workflow.
 
 ## Why this exists
 
-A repository can reveal technologies, architecture, testing practices, and areas of responsibility. It cannot reliably prove business impact, seniority, sole ownership, or production scale. This workflow keeps those boundaries explicit so the resulting profile is useful without becoming fictional.
+Manually maintaining a LinkedIn skills list is tedious, and selecting skills from repository dependencies creates noisy or misleading results. This skill maps your actual contribution history to recognizable LinkedIn skill names, ranks them by depth, frequency, recency, ownership, and target-role relevance, and asks focused questions only when the evidence is ambiguous.
 
 ## Install in Codex
 
@@ -21,22 +23,16 @@ Ask Codex to install the skill directly from this repository:
 
 ```text
 Use $skill-installer to install the skill from
-https://github.com/KieferPlender/code-to-linkedin/tree/main/skills/build-linkedin-profile
+https://github.com/KieferPlender/code-to-linkedin/tree/main/skills/generate-linkedin-skills
 ```
 
-The skill is installed into your personal Codex skills directory and becomes available on your next turn. Open the repository you want analyzed and prompt:
+The skill is installed into your personal Codex skills directory and becomes available on your next turn. Open the repository you want analyzed and invoke:
 
 ```text
-Use $build-linkedin-profile to analyze this repository and help draft my LinkedIn profile.
-
-My Git author name/email:
-Target roles:
-Repositories in scope:
-Details that must remain confidential:
-Output language:
+$generate-linkedin-skills
 ```
 
-Codex may ask follow-up questions before it drafts public-facing copy.
+The skill discovers likely Git identities and analysis defaults itself. When a decision cannot be inferred, it uses Codex's interactive question UI when available instead of requiring a boilerplate prompt.
 
 ## Install in Claude Code
 
@@ -51,10 +47,22 @@ Add this repository as a Claude Code marketplace and install the plugin:
 Invoke the installed skill from any project:
 
 ```text
-/code-to-linkedin:build-linkedin-profile
+/code-to-linkedin:generate-linkedin-skills
 ```
 
 The plugin is installed in your selected Claude Code scope; it does not need to be copied into each repository.
+
+## Interactive intake
+
+A bare invocation is enough. The skill automatically:
+
+- treats the current repository as the initial scope;
+- discovers likely identities from Git configuration and history;
+- uses the conversation language;
+- applies public-safe confidentiality defaults;
+- generates a general skills ranking unless role-specific optimization is requested.
+
+When choices remain, Codex uses its native question interface when available and Claude Code uses `AskUserQuestion`. The user should never need to prepare a metadata block before running the skill.
 
 ## Local development
 
@@ -64,18 +72,18 @@ Test the Claude Code plugin directly from a checkout:
 claude --plugin-dir .
 ```
 
-Then invoke `/code-to-linkedin:build-linkedin-profile`.
+Then invoke `/code-to-linkedin:generate-linkedin-skills`.
 
-## Evidence and privacy model
+## How the analysis works
 
-The workflow distinguishes four evidence classes:
+The workflow combines:
 
-- **Verified contribution**: attributable through Git history or user confirmation.
-- **Repository exposure**: visible in a repository, but personal ownership is unclear.
-- **User-reported context**: provided by the user and not independently visible in code.
-- **Inference**: plausible, but requires confirmation.
+- **Repository understanding**: architecture, product domains, infrastructure, tests, and delivery practices.
+- **Contribution mapping**: Git history and targeted blame to identify what you introduced, evolved, or maintained.
+- **Skill inference**: substantive technologies, engineering capabilities, tooling, domain knowledge, and professional skills.
+- **Evidence-led clarification**: focused questions that determine whether an ambiguous skill should be added, removed, or reranked.
 
-It is designed to avoid publishing secrets, internal URLs, customer data, confidential project names, proprietary implementation details, or unsupported metrics. Review every generated claim before publishing it.
+Private implementation details are translated into public-safe language rather than copied into the profile.
 
 ## Repository structure
 
@@ -85,7 +93,7 @@ It is designed to avoid publishing secrets, internal URLs, customer data, confid
 │   ├── marketplace.json
 │   └── plugin.json
 ├── .codex-plugin/plugin.json
-└── skills/build-linkedin-profile/
+└── skills/generate-linkedin-skills/
     ├── SKILL.md
     └── agents/openai.yaml
 ```

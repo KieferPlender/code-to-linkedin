@@ -1,7 +1,7 @@
 {
   "name": "code-to-linkedin",
-  "version": "0.1.0",
-  "description": "Create evidence-based LinkedIn profile copy from code and verified Git contributions.",
+  "version": "0.2.0",
+  "description": "Automatically generate a ranked LinkedIn Skills section from actual code contributions.",
   "author": {
     "name": "Kiefer Plender",
     "url": "https://github.com/KieferPlender"

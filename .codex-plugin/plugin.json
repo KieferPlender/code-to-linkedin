@@ -1,7 +1,7 @@
 {
   "name": "code-to-linkedin",
-  "version": "0.1.0",
-  "description": "Create evidence-based LinkedIn profile copy from code and verified Git contributions.",
+  "version": "0.2.0",
+  "description": "Automatically generate a ranked LinkedIn Skills section from actual code contributions.",
   "author": {
     "name": "Kiefer Plender",
     "url": "https://github.com/KieferPlender"
@@ -13,15 +13,15 @@
   "keywords": ["career", "linkedin", "git", "profile"],
   "interface": {
     "displayName": "Code to LinkedIn",
-    "shortDescription": "Turn verified code contributions into profile copy.",
-    "longDescription": "Analyzes scoped repositories and optional Git history, asks targeted career questions, and drafts credible LinkedIn headlines, summaries, experience entries, titles, and skills without inventing impact.",
+    "shortDescription": "Generate LinkedIn skills from your code.",
+    "longDescription": "Analyzes codebases and Git contributions to identify substantive technical and professional skills, normalize them for LinkedIn, rank what to feature, and exclude incidental repository technologies.",
     "developerName": "Kiefer Plender",
     "category": "Productivity",
     "capabilities": ["Read"],
     "defaultPrompt": [
-      "Analyze my work and draft my LinkedIn profile.",
-      "Turn my Git contributions into experience bullets.",
-      "Suggest credible job titles and skills from my code."
+      "Generate my LinkedIn skills from my code contributions.",
+      "Rank the strongest skills demonstrated across my repositories.",
+      "Tell me which repository technologies belong on LinkedIn."
     ]
   }
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate LinkedIn Skills"
+  short_description: "Generate LinkedIn skills from your code"
+  default_prompt: "Use $generate-linkedin-skills to analyze my code contributions and produce a ranked, copy-ready LinkedIn Skills section."
