@@ -15,7 +15,7 @@ LinkedIn headlines, About text, job titles, and experience descriptions are avai
 
 ## Why this exists
 
-Manually maintaining a LinkedIn skills list is tedious, and selecting skills from repository dependencies creates noisy or misleading results. This skill maps your actual contribution history to recognizable LinkedIn skill names, ranks them by depth, frequency, recency, ownership, and target-role relevance, and asks focused questions only when the evidence is ambiguous.
+Manually maintaining a LinkedIn skills list is tedious, and selecting skills from repository dependencies creates noisy or misleading results. This skill maps your actual contribution history to recognizable LinkedIn skill names, ranks them by depth, frequency, recency, ownership, and target-role relevance, and exhausts accessible repository and Git evidence before asking an optional question about genuinely off-repository work.
 
 ## Install in Codex
 
@@ -81,7 +81,8 @@ The workflow combines:
 - **Repository understanding**: architecture, product domains, infrastructure, tests, and delivery practices.
 - **Contribution mapping**: Git history and targeted blame to identify what you introduced, evolved, or maintained.
 - **Skill inference**: substantive technologies, engineering capabilities, tooling, domain knowledge, and professional skills.
-- **Evidence-led clarification**: focused questions that determine whether an ambiguous skill should be added, removed, or reranked.
+- **Capability classification**: distinguishes application use, configuration and integration, platform operation, and architecture or ownership from the code and its history.
+- **Evidence-led clarification**: asks only about material responsibilities that cannot be discovered in accessible repositories, without blocking the initial result.
 
 Private implementation details are translated into public-safe language rather than copied into the profile.
 

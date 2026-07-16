@@ -1,6 +1,6 @@
 {
   "name": "code-to-linkedin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Automatically generate a ranked LinkedIn Skills section from actual code contributions.",
   "author": {
     "name": "Kiefer Plender",
