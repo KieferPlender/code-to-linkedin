@@ -4,8 +4,8 @@ Code to LinkedIn is an installable skill for Codex and Claude Code that turns co
 
 It analyzes one or more codebases, uses Git history and targeted blame to focus on your contributions, and produces:
 
-- An immediate action set of 8–15 high-value skills
-- A focused desired display order of 15–25 skills
+- An immediate action set of 10–12 high-value skills
+- A focused recommended priority order of 15–20 skills
 - Evidence and category-appropriate demonstrated scope for material recommendations
 - Lower-priority demonstrated skills to add later
 - Incidental, generated, misleading, vendor-inflated, or overly granular technologies to leave out
@@ -69,7 +69,7 @@ The workflow combines:
 - **Contribution mapping**: Git history and targeted blame to identify what you introduced, evolved, or maintained.
 - **Skill inference**: substantive technologies, engineering capabilities, tooling, and domain knowledge.
 - **Scope classification**: distinguishes applied use, implementation and integration, platform operation, and architecture or ownership.
-- **LinkedIn normalization**: filters routine tools and micro-libraries, avoids unsupported vendor claims, and builds a coherent developer story instead of maximizing keywords.
+- **LinkedIn normalization**: removes overlapping recommendations, filters routine tools and micro-libraries, avoids unsupported labels and vendor claims, and builds a coherent developer story instead of maximizing keywords.
 
 Private implementation details are translated into public-safe language rather than copied into the recommendations.
 

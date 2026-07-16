@@ -63,10 +63,12 @@ Assess evidence strength separately from demonstrated scope.
 
 Evidence strength:
 
-- **Strong**: deep, repeated, recent, or broad contribution evidence.
+- **Strong**: deep, repeated, recent, or broad contribution evidence, supported by multiple material examples or one clearly substantial implementation.
 - **Moderate**: meaningful implementation or maintenance with narrower depth or frequency.
 - **Emerging**: real but early or limited demonstrated use.
 - **Uncertain**: attribution or interpretation remains unresolved after targeted inspection; omit it from the primary list.
+
+Judge every skill independently. Do not default most candidates to **Strong** merely because they appear in the same substantial feature or repository.
 
 Demonstrated scope:
 
@@ -77,6 +79,8 @@ Demonstrated scope:
 - **Architecture and ownership**: made recurring cross-cutting design decisions or led the capability across systems.
 
 Express scope with a category-appropriate phrase instead of a number. Examples include `Advanced Python implementation`, `API architecture and ownership`, `PostgreSQL application integration`, `CI/CD workflow configuration`, `Kubernetes application delivery`, and `Kubernetes cluster operation`.
+
+Use implementation language by default. Use claims such as `production`, `strategy`, `architecture`, `ownership`, `leadership`, or `operation` only when attributed code, history, documentation, or runbooks directly demonstrate that exact scope. A work repository, deployment configuration, or comprehensive test suite does not by itself prove production responsibility, strategic ownership, or leadership.
 
 Use **administration and operation** only for an operable platform, service, database, runtime, network, or infrastructure system. Never describe a programming language, application framework, library, testing tool, engineering technique, or broad capability such as Backend Development as “administration and operation.”
 
@@ -89,13 +93,16 @@ Translate evidence into recognizable, useful LinkedIn-style labels:
 - prefer market-standard terminology over internal component names;
 - merge aliases and duplicates;
 - include a broad capability and a specific technology only when each adds distinct value;
+- prefer an established truthful label such as `Generative AI` over a novel compound label such as `AI Application Development` when both describe the same evidence;
 - never replace a compatible protocol or API with a vendor-branded skill unless the user's attributed work demonstrates that vendor's actual service;
 - prefer `Object Storage` over `Amazon S3` when only an S3-compatible implementation is evidenced;
 - keep confidential domains generic while preserving useful expertise;
 - exclude vague filler, language primitives, routine baseline tools, tiny utilities, and low-signal micro-libraries unless important to the target role;
 - exclude generated artifacts and repository-wide technologies the user did not meaningfully use.
 
-Use widely recognized market terms. Do not claim that a label was validated against LinkedIn's live taxonomy.
+Use widely recognized market terms. Treat them as recommended search labels unless a live LinkedIn taxonomy is available. Do not claim that a label is selectable or validated against LinkedIn's live taxonomy. If an exact label is unavailable, recommend the nearest truthful standard label without increasing the demonstrated scope or introducing a vendor claim.
+
+Before ranking, run a final overlap pass. When two labels would rely on substantially the same evidence and tell the same story, keep the more recognizable or differentiating label in **Add now** and move the other to the complete list, **Add later**, or omit it. In particular, review broad/specific pairs such as `Automated Testing` and `Pytest`, plus near-synonyms such as `System Integration` and `API Integration`. Retain both only when their rationales demonstrate meaningfully different capabilities.
 
 Rank by:
 
@@ -105,18 +112,18 @@ Rank by:
 4. recency and breadth;
 5. target-role relevance when supplied.
 
-For a general profile, build a coherent story rather than maximizing keyword count. Balance core identity, specialist differentiators, supporting technologies, and delivery or platform capabilities. Recommend 15–25 primary skills by default, with 8–15 in the immediate action set and no more than 10 optional additions.
+For a general profile, build a coherent story rather than maximizing keyword count. Balance core identity, specialist differentiators, supporting technologies, and delivery or platform capabilities. Recommend 15–20 primary skills by default, with 10–12 in the immediate action set. Use as few as 8 when the evidence is narrow, and include no more than 8 optional additions.
 
-Do not claim that LinkedIn has a special “top five pinning” model. Produce a desired display order.
+Do not claim that LinkedIn has a special “top five pinning” model or that the platform will preserve a particular order. Produce a recommended priority order.
 
 ## 5. Produce the LinkedIn Skills plan
 
 Return these sections in order:
 
-1. **Add now**: 8–15 ranked skills using the table below.
-2. **Desired display order**: the complete focused list of 15–25 labels, one per line.
+1. **Add now**: 10–12 ranked skills using the table below; use as few as 8 when evidence is narrow.
+2. **Recommended priority order**: the complete focused list of 15–20 labels, one per line.
 3. **Why the leading skills belong**: compact evidence for the highest-priority recommendations.
-4. **Add later**: up to 10 demonstrated but less important skills.
+4. **Add later**: up to 8 demonstrated but less important skills.
 5. **Do not add**: incidental, overly granular, misleading, vendor-inflated, generated, or weakly attributed technologies.
 
 Use this table for the immediate action set:
