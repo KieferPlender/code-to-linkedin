@@ -16,7 +16,14 @@ Use one of two modes:
 - **Create mode**: build a new LinkedIn Skills section when the current profile is unavailable.
 - **Sync mode**: compare demonstrated skills with the user's current LinkedIn profile and recommend exact additions, ordering, associations, demotions, and removals.
 
-Enter sync mode automatically when the user supplies a profile export, PDF, screenshot, pasted profile, or accessible profile page. Otherwise default to create mode. Do not block useful output merely because the current profile is unavailable.
+Enter sync mode automatically when the user supplies a profile export, PDF, screenshot, pasted profile, or accessible profile page. Enter create mode automatically only when the user explicitly asks to create a new profile or says no current profile exists.
+
+For a bare invocation with neither profile context nor an explicit mode, ask this before scanning repositories: “Do you want to improve an existing LinkedIn profile or create a new Skills plan from your code?” Offer:
+
+- **Sync existing profile**: read the current profile and produce an exact change plan.
+- **Create from code**: propose a new Skills section without reading LinkedIn.
+
+Do not silently choose create mode, and do not begin the repository scan until the user selects a mode.
 
 Discover defaults before asking anything:
 
@@ -30,11 +37,13 @@ Use the product's native question interface when available: `request_user_input`
 
 Ask only for a decision that cannot be discovered. Combine necessary choices into one intake round, with no more than three questions:
 
-1. confirm identity only when multiple plausible authors remain;
-2. confirm scope only when multiple likely repositories are available or requested;
-3. choose general positioning or a target role only when the user has not already stated it.
+1. choose create or sync mode when it is not already clear;
+2. confirm identity only when multiple plausible authors remain;
+3. confirm scope only when multiple likely repositories are available or requested.
 
-If the user explicitly wants sync mode but no profile is accessible, ask for one convenient source: an attached export/PDF, pasted current skills and Experience entries, or an opened profile in an available user-authorized browser. Do not require a metadata template.
+Use general positioning by default. Ask about a target role only when the user requests role-specific optimization.
+
+If the user selects sync mode but no profile is accessible, ask how to access it. Offer an available user-authorized browser first, then an attached export/PDF, then pasted current skills and Experience entries. Do not require a metadata template. Do not fall back to create mode unless the user chooses to continue without profile access.
 
 ## 2. Read the current LinkedIn state in sync mode
 
@@ -69,7 +78,7 @@ Before asking a post-scan question about a candidate skill, complete a targeted 
 
 Never ask the user to interpret accessible code or Git evidence. Reserve questions for facts that cannot be discovered there, such as live operational work, inaccessible repositories, incident response, mentoring, or collaboration absent from Git.
 
-## 4. Infer demonstrated skills and capability level
+## 4. Infer demonstrated skills and scope
 
 Generate candidates from substantive evidence, including:
 
@@ -82,7 +91,7 @@ Generate candidates from substantive evidence, including:
 
 Do not add a technology merely because it appears in a dependency, lockfile, generated file, template, or neighboring module.
 
-Assess evidence strength separately from capability level.
+Assess evidence strength separately from demonstrated scope.
 
 Evidence strength:
 
@@ -91,15 +100,17 @@ Evidence strength:
 - **Emerging**: real but early or limited demonstrated use.
 - **Uncertain**: attribution or interpretation remains unresolved after targeted inspection.
 
-Capability level:
+Demonstrated scope:
 
-1. **Incidental exposure**: dependency, generated file, copied configuration, or neighboring code only. Omit it.
-2. **Application use**: implemented product behavior with the technology or deployed an application to it.
-3. **Configuration and integration**: designed or maintained meaningful configuration, automation, integrations, or delivery workflows.
-4. **Administration and operation**: provisioned, secured, upgraded, observed, debugged, or recovered the underlying service or platform.
-5. **Architecture and ownership**: made recurring cross-cutting design decisions or led the capability across systems.
+- **Incidental exposure**: dependency, generated file, copied configuration, or neighboring code only. Omit it.
+- **Applied use**: used the technology to implement real product behavior.
+- **Implementation and integration**: designed or maintained meaningful implementation, configuration, automation, integrations, or delivery workflows.
+- **Administration and operation**: provisioned, secured, upgraded, observed, debugged, or recovered an operable service or platform.
+- **Architecture and ownership**: made recurring cross-cutting design decisions or led the capability across systems.
 
-A user does not need to administer a platform for its base technology to be a valid skill. Do not inflate application use into administration, and do not label a demonstrated skill “uncertain” merely because a higher capability level is absent.
+A user does not need to administer a platform for its base technology to be a valid skill. Do not inflate application use into administration, and do not label a demonstrated skill “uncertain” merely because broader operational scope is absent.
+
+Express scope with a category-appropriate phrase instead of a number. Examples include `Advanced Python implementation`, `API architecture and ownership`, `PostgreSQL application integration`, `CI/CD workflow configuration`, `Kubernetes application delivery`, and `Kubernetes cluster operation`. Use **administration and operation** only for an operable platform, service, database, runtime, network, or infrastructure system. Never describe a programming language, application framework, library, testing tool, engineering technique, or broad capability such as Backend Development as “administration and operation.”
 
 For Kubernetes, treat authored workload manifests, Helm or Kustomize configuration, probes, resources, application configuration, and rollout workflows as application-delivery evidence. Treat cluster provisioning, upgrades, node pools, add-ons, operators, cluster-wide RBAC or policy, admission control, ingress, networking, storage, autoscaling, observability, recovery, incident fixes, and operational runbooks as platform-operation evidence. Rank `Kubernetes` from the demonstrated depth; add administration or platform-engineering claims only when their evidence exists.
 
@@ -110,6 +121,7 @@ Translate evidence into recognizable, useful LinkedIn labels:
 - prefer market-standard terminology over internal component names;
 - merge aliases and duplicates;
 - include a broad capability and a specific technology only when each adds distinct value;
+- never replace a compatible protocol or API with a vendor-branded skill unless the user's attributed work demonstrates that vendor's actual service; prefer `Object Storage` over `Amazon S3` when only an S3-compatible implementation is evidenced;
 - keep confidential domains generic while preserving useful expertise;
 - exclude vague filler, language primitives, routine baseline tools, tiny utilities, and low-signal micro-libraries unless important to the target role;
 - exclude generated artifacts and repository-wide technologies the user did not meaningfully use.
@@ -118,7 +130,7 @@ When a user-authorized LinkedIn browser is available, validate proposed labels b
 
 Rank by:
 
-1. demonstrated strength and capability level;
+1. demonstrated strength and scope;
 2. coherence with the developer identity the evidence supports;
 3. market recognizability and usefulness;
 4. recency and breadth;
@@ -146,7 +158,7 @@ Return:
 
 Use this table for the immediate action set:
 
-| Order | LinkedIn skill | Associate with | Capability level | Evidence strength | Why it belongs |
+| Order | LinkedIn skill | Associate with | Demonstrated scope | Evidence strength | Why it belongs |
 |---:|---|---|---|---|---|
 
 Use the exact visible Experience title when the profile is known. In create mode, write `Needs profile mapping` when the relevant role cannot be identified; never invent an employer or title.
@@ -163,7 +175,7 @@ Return:
 6. **Profile alignment**: conflicts or gaps between leading skills and the visible headline, About, Experience, Featured items, or Connected Apps.
 7. **Optional refinements** that depend on off-repository facts.
 
-| Action | LinkedIn skill | Desired order | Associate with | Capability level | Reason |
+| Action | LinkedIn skill | Desired order | Associate with | Demonstrated scope | Reason |
 |---|---|---:|---|---|---|
 
 Use only these actions: `Add`, `Move up`, `Keep`, `Demote`, and `Remove`. Recommend `Remove` only when the current profile is known and the skill is misleading, obsolete, duplicated, or harmful to positioning. Prefer `Demote` when endorsements or useful history may be lost.

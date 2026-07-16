@@ -1,6 +1,6 @@
 {
   "name": "code-to-linkedin",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Create or synchronize a LinkedIn Skills section from actual code contributions.",
   "author": {
     "name": "Kiefer Plender",

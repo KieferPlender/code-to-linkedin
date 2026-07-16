@@ -12,7 +12,7 @@ The default result includes:
 - An immediate action set of 8-15 high-value skills
 - A focused desired display order of 15-25 skills
 - Skill-to-Experience associations for LinkedIn's profile workflow
-- Evidence and demonstrated capability level for material recommendations
+- Evidence and category-appropriate demonstrated scope for material recommendations
 - A concise positioning check so the skills support a coherent developer profile
 - Lower-priority skills to add later
 - Incidental, generated, misleading, or overly granular technologies to leave out
@@ -68,11 +68,14 @@ A bare invocation is enough. The skill automatically:
 - discovers likely identities from Git configuration and history;
 - uses the conversation language;
 - applies public-safe confidentiality defaults;
-- generates a general skills ranking unless role-specific optimization is requested.
+- generates a general skills ranking unless role-specific optimization is requested;
+- asks whether to create a new plan or sync an existing profile when neither mode can be inferred.
 
 When choices remain, Codex uses its native question interface when available and Claude Code uses `AskUserQuestion`. The user should never need to prepare a metadata block before running the skill.
 
 ## Create and sync modes
+
+When a profile is already attached or open, the skill selects sync mode automatically. When the user explicitly asks for a new profile, it selects create mode. For a bare invocation without profile context, it asks which workflow the user wants before scanning the repository.
 
 Create mode needs only the repositories. It produces a new LinkedIn Skills section with a focused action set, desired order, Experience associations when inferable, and evidence for the leading recommendations.
 
